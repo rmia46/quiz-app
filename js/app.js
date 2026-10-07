@@ -1,4 +1,4 @@
-// Self-contained academic quiz engine and controller with answer count, segments, serif typography, and question marking
+// Self-contained academic quiz engine and controller with live answer count, segments, and serif typography
 (function() {
   'use strict';
 
@@ -993,7 +993,6 @@ class QuizEngine {
   const FIXED_EXAM_MINUTES = 30;
   const QUESTIONS_PER_SEGMENT = 10;
   let cachedResultDetails = [];
-  const flaggedQuestions = new Set(); // Stores IDs of questions marked for review
 
   function init() {
     // Screens
@@ -1021,9 +1020,6 @@ class QuizEngine {
     const segmentTabsGroup = document.getElementById('segmentTabsGroup');
     const qIndexLabel = document.getElementById('qIndexLabel');
     const qTopicLabel = document.getElementById('qTopicLabel');
-    const btnToggleFlag = document.getElementById('btnToggleFlag');
-    const flagIcon = document.getElementById('flagIcon');
-    const flagText = document.getElementById('flagText');
     const qText = document.getElementById('qText');
     const optionsContainer = document.getElementById('optionsContainer');
     const segmentPaginationBar = document.getElementById('segmentPaginationBar');
@@ -1134,37 +1130,14 @@ class QuizEngine {
         if (quizEngine.hasAnswered(q.id)) {
           pageBtn.classList.add('answered');
         }
-        if (flaggedQuestions.has(q.id)) {
-          pageBtn.classList.add('flagged');
-        }
 
         pageBtn.textContent = i + 1;
-        pageBtn.title = `Question ${i + 1}` + (flaggedQuestions.has(q.id) ? ' (Marked for Review)' : '');
         pageBtn.addEventListener('click', () => {
           quizEngine.jumpTo(i);
           renderCurrentQuestion();
         });
         segmentPaginationBar.appendChild(pageBtn);
       }
-    }
-
-    function updateFlagButtonState(qId) {
-      const isFlagged = flaggedQuestions.has(qId);
-      btnToggleFlag.classList.toggle('flagged', isFlagged);
-      flagIcon.textContent = isFlagged ? '⚑' : '⚐';
-      flagText.textContent = isFlagged ? 'Marked' : 'Mark for Review';
-    }
-
-    function toggleFlagCurrentQuestion() {
-      const q = quizEngine.getCurrentQuestion();
-      if (!q) return;
-      if (flaggedQuestions.has(q.id)) {
-        flaggedQuestions.delete(q.id);
-      } else {
-        flaggedQuestions.add(q.id);
-      }
-      updateFlagButtonState(q.id);
-      renderSegmentsAndPagination();
     }
 
     function renderCurrentQuestion() {
@@ -1177,7 +1150,6 @@ class QuizEngine {
       qTopicLabel.textContent = q.topic || 'World History';
       qText.textContent = q.question;
 
-      updateFlagButtonState(q.id);
       updateProgressAnswerCount();
 
       optionsContainer.innerHTML = '';
@@ -1234,7 +1206,6 @@ class QuizEngine {
       currentStudentName = inputName;
       StorageService.setActiveUser(inputName);
       showUserBadge(inputName);
-      flaggedQuestions.clear();
 
       quizEngine = new QuizEngine(allQuestionsData, {
         mode: 'exam',
@@ -1264,14 +1235,10 @@ class QuizEngine {
       const answeredCount = Object.keys(quizEngine.userAnswers).length;
       const total = quizEngine.filteredQuestions.length;
       const unanswered = total - answeredCount;
-      const flaggedCount = flaggedQuestions.size;
 
       let msg = `Submit Examination?\n\nCandidate: ${currentStudentName}\nAnswered: ${answeredCount} / ${total}`;
       if (unanswered > 0) {
         msg += `\nWarning: You have ${unanswered} unanswered question(s).`;
-      }
-      if (flaggedCount > 0) {
-        msg += `\nNote: You have ${flaggedCount} marked question(s).`;
       }
 
       if (confirm(msg)) {
@@ -1435,7 +1402,6 @@ class QuizEngine {
         handleStartExam();
       }
     });
-    btnToggleFlag.addEventListener('click', toggleFlagCurrentQuestion);
     btnViewHistory.addEventListener('click', () => showScreen('history'));
     btnBackToHome.addEventListener('click', () => showScreen('welcome'));
     btnRetakeExam.addEventListener('click', handleStartExam);
