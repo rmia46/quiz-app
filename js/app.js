@@ -992,6 +992,7 @@ class QuizEngine {
   let currentStudentName = '';
   const FIXED_EXAM_MINUTES = 30;
   const QUESTIONS_PER_SEGMENT = 10;
+  const REQUIRE_ALL_ANSWERS = true; // Boolean flag: all questions are required to be answered (cannot skip)
   let cachedResultDetails = [];
 
   function init() {
@@ -1107,6 +1108,9 @@ class QuizEngine {
         tabBtn.className = 'segment-tab-btn' + (s === currentSegmentIdx ? ' active' : '');
         tabBtn.textContent = `Part ${s + 1} (${startQ}–${endQ})`;
         tabBtn.addEventListener('click', () => {
+          if (REQUIRE_ALL_ANSWERS && !checkCurrentAnswered()) {
+            return;
+          }
           quizEngine.jumpTo(s * QUESTIONS_PER_SEGMENT);
           renderCurrentQuestion();
         });
@@ -1133,11 +1137,23 @@ class QuizEngine {
 
         pageBtn.textContent = i + 1;
         pageBtn.addEventListener('click', () => {
+          if (REQUIRE_ALL_ANSWERS && i !== quizEngine.currentIndex && !checkCurrentAnswered()) {
+            return;
+          }
           quizEngine.jumpTo(i);
           renderCurrentQuestion();
         });
         segmentPaginationBar.appendChild(pageBtn);
       }
+    }
+
+    function checkCurrentAnswered() {
+      const currentQ = quizEngine.getCurrentQuestion();
+      if (REQUIRE_ALL_ANSWERS && currentQ && !quizEngine.hasAnswered(currentQ.id)) {
+        alert('Please answer the current question before proceeding. All questions are required.');
+        return false;
+      }
+      return true;
     }
 
     function renderCurrentQuestion() {
@@ -1146,7 +1162,7 @@ class QuizEngine {
       const currentNum = quizEngine.currentIndex + 1;
 
       progressBar.style.width = `${Math.round((currentNum / total) * 100)}%`;
-      qIndexLabel.textContent = `QUESTION ${currentNum} OF ${total}`;
+      qIndexLabel.textContent = `QUESTION ${currentNum} OF ${total}` + (REQUIRE_ALL_ANSWERS ? ' (REQUIRED)' : '');
       qTopicLabel.textContent = q.topic || 'World History';
       qText.textContent = q.question;
 
@@ -1187,6 +1203,9 @@ class QuizEngine {
     }
 
     function navigate(dir) {
+      if (dir === 1 && REQUIRE_ALL_ANSWERS && !checkCurrentAnswered()) {
+        return;
+      }
       if (dir === -1) {
         quizEngine.goToPrev();
       } else {
@@ -1236,11 +1255,18 @@ class QuizEngine {
       const total = quizEngine.filteredQuestions.length;
       const unanswered = total - answeredCount;
 
-      let msg = `Submit Examination?\n\nCandidate: ${currentStudentName}\nAnswered: ${answeredCount} / ${total}`;
-      if (unanswered > 0) {
-        msg += `\nWarning: You have ${unanswered} unanswered question(s).`;
+      if (REQUIRE_ALL_ANSWERS && unanswered > 0) {
+        // Find the first unanswered question index
+        const firstUnansweredIndex = quizEngine.filteredQuestions.findIndex(q => !quizEngine.hasAnswered(q.id));
+        alert(`Cannot submit examination: ${unanswered} question(s) remain unanswered.\n\nAll questions are required. Redirecting to Question #${firstUnansweredIndex + 1}.`);
+        if (firstUnansweredIndex !== -1) {
+          quizEngine.jumpTo(firstUnansweredIndex);
+          renderCurrentQuestion();
+        }
+        return;
       }
 
+      let msg = `Submit Examination?\n\nCandidate: ${currentStudentName}\nAnswered: ${answeredCount} / ${total}`;
       if (confirm(msg)) {
         submitAndDisplayResults();
       }
