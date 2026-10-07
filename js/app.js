@@ -1,4 +1,4 @@
-// Self-contained academic quiz engine and controller with segments, serif typography, and question marking
+// Self-contained academic quiz engine and controller with answer count, segments, serif typography, and question marking
 (function() {
   'use strict';
 
@@ -1006,6 +1006,8 @@ class QuizEngine {
     const userBadge = document.getElementById('userBadge');
     const userNameDisplay = document.getElementById('userNameDisplay');
     const btnSwitchUser = document.getElementById('btnSwitchUser');
+    const progressBox = document.getElementById('progressBox');
+    const answeredCountDisplay = document.getElementById('answeredCountDisplay');
     const timerBox = document.getElementById('timerBox');
     const timerDisplay = document.getElementById('timerDisplay');
 
@@ -1067,11 +1069,19 @@ class QuizEngine {
 
       if (screenName !== 'quiz') {
         timerBox.style.display = 'none';
+        if (progressBox) progressBox.style.display = 'none';
       }
       if (screenName === 'history') {
         renderHistoryTable();
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateProgressAnswerCount() {
+      if (!quizEngine || !answeredCountDisplay) return;
+      const answered = Object.keys(quizEngine.userAnswers).length;
+      const total = quizEngine.filteredQuestions.length;
+      answeredCountDisplay.innerHTML = `<strong>${answered}</strong>/${total}`;
     }
 
     function updateTimerDisplay(secondsLeft) {
@@ -1168,6 +1178,7 @@ class QuizEngine {
       qText.textContent = q.question;
 
       updateFlagButtonState(q.id);
+      updateProgressAnswerCount();
 
       optionsContainer.innerHTML = '';
       const selectedOption = quizEngine.getUserAnswer(q.id);
@@ -1190,6 +1201,7 @@ class QuizEngine {
           quizEngine.selectAnswer(q.id, optIdx);
           const allBtns = optionsContainer.querySelectorAll('.option-btn');
           allBtns.forEach((b, i) => b.classList.toggle('selected', i === optIdx));
+          updateProgressAnswerCount();
           renderSegmentsAndPagination();
         });
 
@@ -1233,6 +1245,7 @@ class QuizEngine {
 
       showScreen('quiz');
       timerBox.style.display = 'flex';
+      if (progressBox) progressBox.style.display = 'flex';
 
       quizEngine.onTick = updateTimerDisplay;
       quizEngine.onTimeUp = () => {
@@ -1242,6 +1255,7 @@ class QuizEngine {
 
       quizEngine.startTimer();
       updateTimerDisplay(quizEngine.timeRemaining);
+      updateProgressAnswerCount();
 
       renderCurrentQuestion();
     }
