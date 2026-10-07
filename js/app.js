@@ -1,39 +1,46 @@
 import { QuizEngine } from './quiz-engine.js';
+import { StorageService } from './storage.js';
 
 let allQuestionsData = [];
 let quizEngine = null;
+let currentStudentName = '';
+const FIXED_EXAM_MINUTES = 30;
 
-// DOM Elements
+// Screens
 const welcomeScreen = document.getElementById('welcomeScreen');
 const quizScreen = document.getElementById('quizScreen');
 const resultsScreen = document.getElementById('resultsScreen');
+const historyScreen = document.getElementById('historyScreen');
 
-// Welcome Controls
-const btnStartQuiz = document.getElementById('btnStartQuiz');
-const filterPills = document.querySelectorAll('[data-filter]');
-const modePills = document.querySelectorAll('[data-mode]');
-const timerPills = document.querySelectorAll('[data-time]');
-
-// Quiz Controls
+// Header elements
+const userBadge = document.getElementById('userBadge');
+const userNameDisplay = document.getElementById('userNameDisplay');
+const btnSwitchUser = document.getElementById('btnSwitchUser');
 const timerBox = document.getElementById('timerBox');
 const timerDisplay = document.getElementById('timerDisplay');
+
+// Welcome elements
+const studentNameInput = document.getElementById('studentNameInput');
+const btnStartExam = document.getElementById('btnStartExam');
+const btnViewHistory = document.getElementById('btnViewHistory');
+
+// Quiz elements
 const progressBar = document.getElementById('progressBar');
 const qIndexLabel = document.getElementById('qIndexLabel');
+const qTopicLabel = document.getElementById('qTopicLabel');
 const qTypeBadge = document.getElementById('qTypeBadge');
 const qDiffBadge = document.getElementById('qDiffBadge');
-const qTopicLabel = document.getElementById('qTopicLabel');
 const qText = document.getElementById('qText');
 const optionsContainer = document.getElementById('optionsContainer');
-const practiceFeedback = document.getElementById('practiceFeedback');
-const feedbackTitle = document.getElementById('feedbackTitle');
-const feedbackText = document.getElementById('feedbackText');
 const btnPrev = document.getElementById('btnPrev');
 const btnNext = document.getElementById('btnNext');
 const btnSubmitExam = document.getElementById('btnSubmitExam');
 const questionPalette = document.getElementById('questionPalette');
 
-// Results Controls
+// Results elements
+const resCandidateName = document.getElementById('resCandidateName');
 const finalPercentage = document.getElementById('finalPercentage');
+const resScoreSummaryText = document.getElementById('resScoreSummaryText');
 const statTotal = document.getElementById('statTotal');
 const statCorrect = document.getElementById('statCorrect');
 const statIncorrect = document.getElementById('statIncorrect');
@@ -41,96 +48,128 @@ const statSkipped = document.getElementById('statSkipped');
 const statTimeSpent = document.getElementById('statTimeSpent');
 const breakdownContainer = document.getElementById('breakdownContainer');
 const reviewContainer = document.getElementById('reviewContainer');
-const btnRetake = document.getElementById('btnRetake');
-const btnReviewFilterAll = document.getElementById('reviewFilterAll');
-const btnReviewFilterIncorrect = document.getElementById('reviewFilterIncorrect');
+const btnRetakeExam = document.getElementById('btnRetakeExam');
+const btnShowHistoryFromResults = document.getElementById('btnShowHistoryFromResults');
+const btnReviewAll = document.getElementById('btnReviewAll');
+const btnReviewIncorrect = document.getElementById('btnReviewIncorrect');
 
-// Active Settings
-let selectedFilter = 'all';
-let selectedMode = 'exam';
-let selectedTimeMinutes = 45;
+// History screen elements
+const historyTableContainer = document.getElementById('historyTableContainer');
+const btnBackToHome = document.getElementById('btnBackToHome');
+const btnClearHistory = document.getElementById('btnClearHistory');
 
-// Load Questions from JSON
+let cachedResultDetails = [];
+
+// Initialize
 async function initApp() {
   try {
-    const res = await fetch('./data/questions.json');
+    // Load module questions
+    const res = await fetch('./modules/history-102/questions.json');
     allQuestionsData = await res.json();
-    setupConfigListeners();
+
+    // Check remembered student name
+    const rememberedName = StorageService.getActiveUser();
+    if (rememberedName) {
+      currentStudentName = rememberedName;
+      studentNameInput.value = rememberedName;
+      showUserBadge(rememberedName);
+    }
+
+    bindEvents();
   } catch (err) {
-    console.error('Failed to load questions data:', err);
-    alert('Unable to load quiz dataset. Please ensure questions.json is available.');
+    console.error('Failed to load questions dataset', err);
+    alert('Error loading quiz dataset. Please verify network or file availability.');
   }
 }
 
-function setupConfigListeners() {
-  filterPills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      filterPills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-      selectedFilter = pill.getAttribute('data-filter');
-    });
+function showUserBadge(name) {
+  if (name && name.trim()) {
+    userNameDisplay.textContent = name;
+    userBadge.style.display = 'inline-flex';
+  } else {
+    userBadge.style.display = 'none';
+  }
+}
+
+function bindEvents() {
+  btnStartExam.addEventListener('click', handleStartExam);
+  btnViewHistory.addEventListener('click', () => showScreen('history'));
+  btnBackToHome.addEventListener('click', () => showScreen('welcome'));
+  btnRetakeExam.addEventListener('click', handleStartExam);
+  btnShowHistoryFromResults.addEventListener('click', () => showScreen('history'));
+
+  btnSwitchUser.addEventListener('click', () => {
+    StorageService.clearActiveUser();
+    currentStudentName = '';
+    studentNameInput.value = '';
+    userBadge.style.display = 'none';
+    showScreen('welcome');
+    studentNameInput.focus();
   });
 
-  modePills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      modePills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-      selectedMode = pill.getAttribute('data-mode');
-    });
+  btnClearHistory.addEventListener('click', () => {
+    if (confirm('Are you sure you want to delete all saved score records on this machine?')) {
+      StorageService.clearHistory();
+      renderHistoryTable();
+    }
   });
 
-  timerPills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      timerPills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-      selectedTimeMinutes = parseInt(pill.getAttribute('data-time'), 10);
-    });
-  });
-
-  btnStartQuiz.addEventListener('click', startQuiz);
   btnPrev.addEventListener('click', () => navigate(-1));
   btnNext.addEventListener('click', () => navigate(1));
   btnSubmitExam.addEventListener('click', confirmSubmission);
-  btnRetake.addEventListener('click', resetQuiz);
 
-  if (btnReviewFilterAll) {
-    btnReviewFilterAll.addEventListener('click', () => filterReviewList('all'));
-  }
-  if (btnReviewFilterIncorrect) {
-    btnReviewFilterIncorrect.addEventListener('click', () => filterReviewList('incorrect'));
-  }
+  if (btnReviewAll) btnReviewAll.addEventListener('click', () => renderReviewList('all'));
+  if (btnReviewIncorrect) btnReviewIncorrect.addEventListener('click', () => renderReviewList('incorrect'));
 }
 
-function startQuiz() {
-  quizEngine = new QuizEngine(allQuestionsData, {
-    mode: selectedMode,
-    filterType: selectedFilter,
-    timeLimitMinutes: selectedTimeMinutes,
-    shuffle: false
-  });
+function showScreen(screenName) {
+  welcomeScreen.style.display = screenName === 'welcome' ? 'block' : 'none';
+  quizScreen.style.display = screenName === 'quiz' ? 'block' : 'none';
+  resultsScreen.style.display = screenName === 'results' ? 'block' : 'none';
+  historyScreen.style.display = screenName === 'history' ? 'block' : 'none';
 
-  if (quizEngine.filteredQuestions.length === 0) {
-    alert('No questions matched the selected category.');
+  if (screenName !== 'quiz') {
+    timerBox.style.display = 'none';
+  }
+
+  if (screenName === 'history') {
+    renderHistoryTable();
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function handleStartExam() {
+  const inputName = studentNameInput.value.trim();
+  if (!inputName) {
+    alert('Please enter your Candidate Name / Student ID before starting the examination.');
+    studentNameInput.focus();
     return;
   }
 
-  // Setup UI states
-  welcomeScreen.style.display = 'none';
-  resultsScreen.style.display = 'none';
-  quizScreen.style.display = 'block';
+  currentStudentName = inputName;
+  StorageService.setActiveUser(inputName);
+  showUserBadge(inputName);
 
-  if (selectedMode === 'exam') {
-    timerBox.style.display = 'flex';
-    quizEngine.onTick = updateTimerDisplay;
-    quizEngine.onTimeUp = () => {
-      alert('Time has expired! Submitting your answers automatically.');
-      finishQuiz();
-    };
-    quizEngine.startTimer();
-    updateTimerDisplay(quizEngine.timeRemaining);
-  } else {
-    timerBox.style.display = 'none';
-  }
+  // Initialize Quiz Engine (Fixed 30 minutes, full 50 questions)
+  quizEngine = new QuizEngine(allQuestionsData, {
+    mode: 'exam',
+    filterType: 'all',
+    timeLimitMinutes: FIXED_EXAM_MINUTES,
+    shuffle: false
+  });
+
+  showScreen('quiz');
+  timerBox.style.display = 'flex';
+
+  quizEngine.onTick = updateTimerDisplay;
+  quizEngine.onTimeUp = () => {
+    alert('Time limit reached (30 minutes). Automatically submitting your examination.');
+    submitAndDisplayResults();
+  };
+
+  quizEngine.startTimer();
+  updateTimerDisplay(quizEngine.timeRemaining);
 
   renderPalette();
   renderCurrentQuestion();
@@ -140,7 +179,7 @@ function updateTimerDisplay(secondsLeft) {
   const mins = Math.floor(secondsLeft / 60);
   const secs = secondsLeft % 60;
   timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  
+
   if (secondsLeft <= 300) {
     timerBox.classList.add('warning');
   } else {
@@ -183,21 +222,15 @@ function renderCurrentQuestion() {
   const total = quizEngine.filteredQuestions.length;
   const currentNum = quizEngine.currentIndex + 1;
 
-  // Progress Bar
-  const percent = Math.round((currentNum / total) * 100);
-  progressBar.style.width = `${percent}%`;
-
-  // Meta Info
+  progressBar.style.width = `${Math.round((currentNum / total) * 100)}%`;
   qIndexLabel.textContent = `QUESTION ${currentNum} OF ${total}`;
+  qTopicLabel.textContent = q.topic || 'World History';
   qTypeBadge.textContent = q.type.toUpperCase();
   qTypeBadge.className = `tag-badge tag-${q.type}`;
   qDiffBadge.textContent = q.difficulty.toUpperCase();
-  qTopicLabel.textContent = q.topic || 'World History';
 
-  // Question Prompt
   qText.textContent = q.question;
 
-  // Options
   optionsContainer.innerHTML = '';
   const selectedOption = quizEngine.getUserAnswer(q.id);
   const letters = ['A', 'B', 'C', 'D'];
@@ -215,56 +248,23 @@ function renderCurrentQuestion() {
     `;
 
     optBtn.addEventListener('click', () => {
-      handleOptionSelect(q.id, optIdx);
+      quizEngine.selectAnswer(q.id, optIdx);
+      const allBtns = optionsContainer.querySelectorAll('.option-btn');
+      allBtns.forEach((b, i) => b.classList.toggle('selected', i === optIdx));
+      updatePaletteStates();
     });
 
     optionsContainer.appendChild(optBtn);
   });
 
-  // Practice Mode Instant Feedback
-  if (selectedMode === 'practice' && selectedOption !== null) {
-    showPracticeFeedback(q, selectedOption);
-  } else {
-    practiceFeedback.classList.remove('show', 'correct-feedback', 'incorrect-feedback');
-  }
-
-  // Navigation Buttons
   btnPrev.disabled = quizEngine.currentIndex === 0;
   btnNext.style.display = (quizEngine.currentIndex === total - 1) ? 'none' : 'inline-flex';
-  btnSubmitExam.style.display = (quizEngine.currentIndex === total - 1 || selectedMode === 'exam') ? 'inline-flex' : 'none';
 
   updatePaletteStates();
 }
 
-function handleOptionSelect(qId, optIdx) {
-  quizEngine.selectAnswer(qId, optIdx);
-  const q = quizEngine.getCurrentQuestion();
-
-  // Highlight selected option
-  const allBtns = optionsContainer.querySelectorAll('.option-btn');
-  allBtns.forEach((btn, idx) => {
-    btn.classList.toggle('selected', idx === optIdx);
-  });
-
-  updatePaletteStates();
-
-  if (selectedMode === 'practice') {
-    showPracticeFeedback(q, optIdx);
-  }
-}
-
-function showPracticeFeedback(q, selectedIdx) {
-  const isCorrect = selectedIdx === q.answer;
-  practiceFeedback.className = 'explanation-panel show ' + (isCorrect ? 'correct-feedback' : 'incorrect-feedback');
-  feedbackTitle.textContent = isCorrect ? '✓ CORRECT ANSWER' : '✗ INCORRECT';
-  feedbackText.innerHTML = `
-    <p><strong>Correct Option:</strong> ${escapeHtml(q.options[q.answer])}</p>
-    <p style="margin-top:0.4rem;">${escapeHtml(q.explanation)}</p>
-  `;
-}
-
-function navigate(direction) {
-  if (direction === -1) {
+function navigate(dir) {
+  if (dir === -1) {
     quizEngine.goToPrev();
   } else {
     quizEngine.goToNext();
@@ -277,24 +277,41 @@ function confirmSubmission() {
   const total = quizEngine.filteredQuestions.length;
   const unanswered = total - answeredCount;
 
-  let msg = `Ready to submit your examination?\n\nAnswered: ${answeredCount} / ${total}`;
+  let msg = `Submit Examination?\n\nCandidate: ${currentStudentName}\nAnswered: ${answeredCount} / ${total}`;
   if (unanswered > 0) {
     msg += `\nWarning: You have ${unanswered} unanswered question(s).`;
   }
 
   if (confirm(msg)) {
-    finishQuiz();
+    submitAndDisplayResults();
   }
 }
 
-function finishQuiz() {
+function submitAndDisplayResults() {
   const results = quizEngine.calculateResults();
-  quizScreen.style.display = 'none';
-  timerBox.style.display = 'none';
-  resultsScreen.style.display = 'block';
+  cachedResultDetails = results.details;
 
-  // Populate Results
+  // Save to persistent storage
+  StorageService.saveAttempt({
+    studentName: currentStudentName,
+    moduleId: 'history-102',
+    moduleTitle: 'HIS 102 & 205 World Civilization',
+    scorePercentage: results.scorePercentage,
+    correctCount: results.correctCount,
+    incorrectCount: results.incorrectCount,
+    skippedCount: results.skippedCount,
+    totalQuestions: results.total,
+    timeSpentSeconds: results.timeSpentSeconds,
+    breakdownByType: results.breakdownByType
+  });
+
+  showScreen('results');
+
+  // Display results
+  resCandidateName.textContent = currentStudentName;
   finalPercentage.textContent = `${results.scorePercentage}%`;
+  resScoreSummaryText.textContent = `Scored ${results.correctCount} of ${results.total} questions (${results.scorePercentage}%). Attempt saved to your score archive.`;
+
   statTotal.textContent = results.total;
   statCorrect.textContent = results.correctCount;
   statIncorrect.textContent = results.incorrectCount;
@@ -305,7 +322,7 @@ function finishQuiz() {
   statTimeSpent.textContent = `${mins}m ${secs}s`;
 
   renderBreakdown(results.breakdownByType);
-  renderReviewList(results.details, 'all');
+  renderReviewList('all');
 }
 
 function renderBreakdown(breakdown) {
@@ -322,45 +339,40 @@ function renderBreakdown(breakdown) {
   }
 }
 
-let cachedResultsDetails = [];
-
-function renderReviewList(details, filter) {
-  cachedResultsDetails = details;
+function renderReviewList(filter) {
   reviewContainer.innerHTML = '';
-
-  const filtered = filter === 'incorrect' 
-    ? details.filter(d => d.status !== 'correct')
-    : details;
+  const filtered = filter === 'incorrect'
+    ? cachedResultDetails.filter(d => d.status !== 'correct')
+    : cachedResultDetails;
 
   if (filtered.length === 0) {
-    reviewContainer.innerHTML = '<p style="color:var(--text-secondary); padding:1rem 0;">No questions match this review filter.</p>';
+    reviewContainer.innerHTML = '<p style="color:var(--text-secondary); padding:1rem 0;">No questions match this filter.</p>';
     return;
   }
 
   const letters = ['A', 'B', 'C', 'D'];
 
-  filtered.forEach((item, idx) => {
+  filtered.forEach(item => {
     const q = item.question;
     const div = document.createElement('div');
     div.className = `review-item is-${item.status}`;
 
-    let statusBadgeText = item.status.toUpperCase();
-    let userAnsText = item.selected !== null ? `${letters[item.selected]}: ${q.options[item.selected]}` : 'None (Skipped)';
-    let correctAnsText = `${letters[q.answer]}: ${q.options[q.answer]}`;
+    const userAns = item.selected !== null ? `${letters[item.selected]}: ${q.options[item.selected]}` : 'None (Skipped)';
+    const correctAns = `${letters[q.answer]}: ${q.options[q.answer]}`;
 
     div.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <span style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-secondary);">QUESTION #${q.id}</span>
-        <span class="tag-badge tag-${q.type}">${statusBadgeText}</span>
+        <span style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-muted);">QUESTION #${q.id}</span>
+        <span class="tag-badge tag-${q.type}">${item.status.toUpperCase()}</span>
       </div>
-      <h3 style="font-family:var(--font-serif); font-size:1.15rem; margin-bottom:1rem; color:#fff;">${escapeHtml(q.question)}</h3>
-      <div style="font-size:0.9rem; margin-bottom:0.6rem; color: ${item.isCorrect ? 'var(--color-correct)' : 'var(--color-incorrect)'};">
-        <strong>Your Answer:</strong> ${escapeHtml(userAnsText)}
+      <h3 style="font-family:var(--font-serif); font-size:1.15rem; margin-bottom:0.75rem; color:var(--text-primary);">${escapeHtml(q.question)}</h3>
+      <div style="font-size:0.9rem; margin-bottom:0.5rem; color: ${item.isCorrect ? 'var(--color-correct)' : 'var(--color-incorrect)'};">
+        <strong>Your Answer:</strong> ${escapeHtml(userAns)}
       </div>
       <div style="font-size:0.9rem; margin-bottom:0.75rem; color: var(--accent-lime);">
-        <strong>Correct Answer:</strong> ${escapeHtml(correctAnsText)}
+        <strong>Correct Answer:</strong> ${escapeHtml(correctAns)}
       </div>
-      <div style="font-size:0.88rem; color:var(--text-secondary); background:var(--bg-surface-elevated); padding:0.75rem; border-left:2px solid var(--accent-lime);">
+      <div style="font-size:0.88rem; color:var(--text-secondary); background:var(--bg-surface-elevated); padding:0.75rem; border-left:3px solid var(--accent-lime);">
         <strong>Explanation:</strong> ${escapeHtml(q.explanation)}
       </div>
     `;
@@ -369,18 +381,51 @@ function renderReviewList(details, filter) {
   });
 }
 
-function filterReviewList(filter) {
-  if (btnReviewFilterAll && btnReviewFilterIncorrect) {
-    btnReviewFilterAll.classList.toggle('active', filter === 'all');
-    btnReviewFilterIncorrect.classList.toggle('active', filter === 'incorrect');
-  }
-  renderReviewList(cachedResultsDetails, filter);
-}
+function renderHistoryTable() {
+  const records = StorageService.getAllRecords();
 
-function resetQuiz() {
-  resultsScreen.style.display = 'none';
-  welcomeScreen.style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (records.length === 0) {
+    historyTableContainer.innerHTML = `
+      <p style="color: var(--text-secondary); padding: 2rem 0; text-align: center;">
+        No examination records found. Complete a 30-minute exam session to log your score here.
+      </p>
+    `;
+    return;
+  }
+
+  let html = `
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>Date & Time</th>
+          <th>Candidate</th>
+          <th>Score</th>
+          <th>Correct</th>
+          <th>Time Taken</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  records.forEach(r => {
+    const d = new Date(r.timestamp);
+    const dateFormatted = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const mins = Math.floor(r.timeSpentSeconds / 60);
+    const secs = r.timeSpentSeconds % 60;
+
+    html += `
+      <tr>
+        <td style="font-family: var(--font-mono); font-size: 0.82rem;">${dateFormatted}</td>
+        <td><strong>${escapeHtml(r.studentName)}</strong></td>
+        <td><strong style="color: var(--accent-lime);">${r.scorePercentage}%</strong></td>
+        <td>${r.correctCount} / ${r.totalQuestions}</td>
+        <td style="font-family: var(--font-mono);">${mins}m ${secs}s</td>
+      </tr>
+    `;
+  });
+
+  html += '</tbody></table>';
+  historyTableContainer.innerHTML = html;
 }
 
 function escapeHtml(str) {

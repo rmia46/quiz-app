@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HIS 102 / HIS 205: Introduction to World Civilization & History Assessment</title>
+  <title>Academic Quiz Platform | HIS 102 Assessment</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
@@ -11,84 +11,70 @@
 </head>
 <body>
 
-  <!-- Top Academic Navigation -->
+  <!-- Academic Top Header -->
   <header class="academic-header">
     <div class="header-container">
       <div>
         <div class="brand-badge">DEPARTMENT OF HISTORY & PHILOSOPHY</div>
-        <div class="brand-title">HIS 102 & 205 Comprehensive Examination</div>
+        <div class="brand-title">Academic Examination Platform</div>
       </div>
-      <div id="timerBox" class="timer-box" style="display: none;">
-        <span class="timer-label">Time Remaining</span>
-        <span id="timerDisplay" class="timer-display">45:00</span>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <div id="userBadge" class="user-status-pill" style="display: none;">
+          <span>Candidate:</span> <strong id="userNameDisplay">Anonymous</strong>
+          <button id="btnSwitchUser" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.75rem; text-decoration:underline;">(Change)</button>
+        </div>
+        <div id="timerBox" class="timer-box" style="display: none;">
+          <span class="timer-label">Time Remaining</span>
+          <span id="timerDisplay" class="timer-display">30:00</span>
+        </div>
       </div>
     </div>
   </header>
 
   <main class="container">
 
-    <!-- WELCOME / CONFIGURATION SCREEN -->
+    <!-- SCREEN 1: CANDIDATE IDENTIFICATION & MODULE HOME -->
     <section id="welcomeScreen" class="academic-card">
-      <h1 class="hero-title">Introduction to History & World Civilization Assessment</h1>
+      <h1 class="hero-title">HIS 102 / 205: World Civilization & History Assessment</h1>
       <p class="hero-subtitle">
-        A rigorous 50-question examination spanning historical methodology, archaeological & literary evidence, evolutionary anthropology, scientific dating, and civilizational origins.
+        Official comprehensive examination covering archaeological & literary source criticism, paleolithic/neolithic transitions, evolutionary milestones, and historical methodology.
       </p>
 
       <div class="exam-meta-grid">
+        <div>
+          <div class="meta-item-label">Assessment Module</div>
+          <div class="meta-item-value">HIS 102 Core</div>
+        </div>
         <div>
           <div class="meta-item-label">Total Questions</div>
           <div class="meta-item-value">50 High-Yield MCQs</div>
         </div>
         <div>
-          <div class="meta-item-label">Composition</div>
-          <div class="meta-item-value">Creative (14) · General (20) · Mixed (16)</div>
+          <div class="meta-item-label">Fixed Examination Time</div>
+          <div class="meta-item-value">30 Minutes</div>
         </div>
         <div>
-          <div class="meta-item-label">Standard Duration</div>
-          <div class="meta-item-value">45 Minutes</div>
-        </div>
-        <div>
-          <div class="meta-item-label">Pedagogy</div>
-          <div class="meta-item-value">Bloom's Higher-Order Analysis</div>
+          <div class="meta-item-label">Question Types</div>
+          <div class="meta-item-value">Creative · General · Mixed</div>
         </div>
       </div>
 
-      <!-- Mode Selection -->
-      <div class="config-group">
-        <label class="config-label">1. Examination Mode</label>
-        <div class="option-pill-group">
-          <button type="button" class="option-pill active" data-mode="exam">Timed Exam (Strict Clock & Post-Exam Review)</button>
-          <button type="button" class="option-pill" data-mode="practice">Practice Mode (Untimed with Instant Explanations)</button>
-        </div>
+      <!-- Candidate Name Entry -->
+      <div class="form-group" style="max-width: 500px;">
+        <label for="studentNameInput" class="form-label">Candidate Name / Student ID *</label>
+        <input type="text" id="studentNameInput" class="text-input" placeholder="e.g. Jane Doe / 2021-001" autocomplete="name" required>
+        <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-top: 0.35rem;">
+          Your name is stored locally on this machine to track your examination scores and performance history.
+        </span>
       </div>
 
-      <!-- Question Pool Filter -->
-      <div class="config-group">
-        <label class="config-label">2. Question Category Filter</label>
-        <div class="option-pill-group">
-          <button type="button" class="option-pill active" data-filter="all">All Questions (Full 50)</button>
-          <button type="button" class="option-pill" data-filter="creative">Creative / Analytical Only (14)</button>
-          <button type="button" class="option-pill" data-filter="general">General / Conceptual Only (20)</button>
-          <button type="button" class="option-pill" data-filter="mixed">Mixed / Applied Only (16)</button>
-        </div>
-      </div>
-
-      <!-- Timer Limit Selection -->
-      <div class="config-group">
-        <label class="config-label">3. Exam Duration</label>
-        <div class="option-pill-group">
-          <button type="button" class="option-pill" data-time="30">30 Minutes (Rapid)</button>
-          <button type="button" class="option-pill active" data-time="45">45 Minutes (Standard)</button>
-          <button type="button" class="option-pill" data-time="60">60 Minutes (Extended)</button>
-        </div>
-      </div>
-
-      <div style="margin-top: 2rem;">
-        <button id="btnStartQuiz" class="btn-primary">Begin Examination →</button>
+      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-top: 2rem;">
+        <button id="btnStartExam" class="btn-primary">Start Examination (30 Min) →</button>
+        <button id="btnViewHistory" class="btn-secondary">View Score History 📜</button>
       </div>
     </section>
 
-    <!-- QUIZ INTERFACE SCREEN -->
+    <!-- SCREEN 2: ACTIVE EXAMINATION INTERFACE -->
     <section id="quizScreen" style="display: none;">
       <div class="quiz-progress-bar-container">
         <div id="progressBar" class="quiz-progress-bar"></div>
@@ -107,42 +93,33 @@
         <h2 id="qText" class="question-title">Question prompt goes here...</h2>
 
         <div id="optionsContainer" class="options-list">
-          <!-- Options rendered dynamically -->
+          <!-- Rendered dynamically -->
         </div>
 
-        <!-- Practice Mode Feedback -->
-        <div id="practiceFeedback" class="explanation-panel">
-          <div id="feedbackTitle" class="explanation-title">FEEDBACK</div>
-          <div id="feedbackText" class="explanation-body">Explanation content...</div>
-        </div>
-
-        <!-- Bottom Controls -->
-        <div class="quiz-controls">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
           <div>
             <button id="btnPrev" class="btn-secondary">← Previous</button>
             <button id="btnNext" class="btn-primary" style="margin-left: 0.5rem;">Next →</button>
           </div>
-          <button id="btnSubmitExam" class="btn-secondary" style="border-color: var(--accent-lime); color: var(--accent-lime);">Submit Examination</button>
+          <button id="btnSubmitExam" class="btn-secondary" style="border-color: var(--color-incorrect); color: var(--color-incorrect);">Finish & Submit</button>
         </div>
       </div>
 
-      <!-- Question Palette / Quick Jump Drawer -->
+      <!-- Question Palette -->
       <div class="academic-card" style="padding: 1.25rem;">
-        <div class="meta-item-label" style="margin-bottom: 0.5rem;">Question Navigator</div>
-        <div id="questionPalette" class="palette-container">
-          <!-- Palette buttons rendered dynamically -->
-        </div>
+        <div class="meta-item-label" style="margin-bottom: 0.5rem;">Question Navigator (Click number to jump)</div>
+        <div id="questionPalette" class="palette-container"></div>
       </div>
     </section>
 
-    <!-- RESULTS & REVIEW SCREEN -->
+    <!-- SCREEN 3: RESULTS & POST-EXAM REVIEW -->
     <section id="resultsScreen" style="display: none;">
       <div class="academic-card">
         <div class="score-hero">
-          <div class="meta-item-label">Final Evaluation Score</div>
+          <div class="meta-item-label">Assessment Result for <span id="resCandidateName">Candidate</span></div>
           <div id="finalPercentage" class="score-number">0%</div>
-          <p style="color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.9rem;">
-            Examination completed and graded in accordance with academic standards.
+          <p id="resScoreSummaryText" style="color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.95rem;">
+            Score recorded into persistent candidate log.
           </p>
         </div>
 
@@ -152,11 +129,11 @@
             <div id="statTotal" class="stat-val">50</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">Correct Answers</div>
+            <div class="stat-label">Correct</div>
             <div id="statCorrect" class="stat-val" style="color: var(--color-correct);">0</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">Incorrect Answers</div>
+            <div class="stat-label">Incorrect</div>
             <div id="statIncorrect" class="stat-val" style="color: var(--color-incorrect);">0</div>
           </div>
           <div class="stat-card">
@@ -164,31 +141,54 @@
             <div id="statSkipped" class="stat-val" style="color: var(--color-warning);">0</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">Time Elapsed</div>
+            <div class="stat-label">Time Taken</div>
             <div id="statTimeSpent" class="stat-val">0m 0s</div>
           </div>
         </div>
 
-        <div class="meta-item-label" style="margin-bottom: 0.75rem;">Performance by Question Classification</div>
-        <div id="breakdownContainer" class="score-stats-grid" style="margin-bottom: 2.5rem;">
-          <!-- Category breakdown rendered here -->
+        <!-- Performance by Type Breakdown -->
+        <div class="meta-item-label" style="margin-bottom: 0.75rem;">Breakdown by Question Type</div>
+        <div id="breakdownContainer" class="score-stats-grid" style="margin-bottom: 2rem;"></div>
+
+        <!-- Actions -->
+        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 2.5rem;">
+          <button id="btnRetakeExam" class="btn-primary">Retake Examination ↻</button>
+          <button id="btnShowHistoryFromResults" class="btn-secondary">View Score History 📜</button>
         </div>
 
-        <!-- Review Section -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
-          <h3 style="font-family: var(--font-serif); font-size: 1.5rem;">Comprehensive Answer Key & Analysis</h3>
-          <div class="option-pill-group">
-            <button id="reviewFilterAll" class="option-pill active">Show All</button>
-            <button id="reviewFilterIncorrect" class="option-pill">Show Incorrect Only</button>
+        <!-- Detailed Review -->
+        <div style="border-top: 2px solid var(--border-subtle); padding-top: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+            <h3 style="font-family: var(--font-serif); font-size: 1.4rem;">Question-by-Question Review</h3>
+            <div style="display: flex; gap: 0.5rem;">
+              <button id="btnReviewAll" class="btn-secondary" style="padding: 0.35rem 0.85rem; font-size: 0.78rem;">All</button>
+              <button id="btnReviewIncorrect" class="btn-secondary" style="padding: 0.35rem 0.85rem; font-size: 0.78rem;">Incorrect Only</button>
+            </div>
           </div>
+          <div id="reviewContainer"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: PERSISTENT SCORE HISTORY SCREEN -->
+    <section id="historyScreen" style="display: none;">
+      <div class="academic-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div class="meta-item-label">Records Archive</div>
+            <h2 style="font-family: var(--font-serif); font-size: 1.8rem;">Examination Score History</h2>
+          </div>
+          <button id="btnBackToHome" class="btn-secondary">← Back to Assessment Home</button>
         </div>
 
-        <div id="reviewContainer">
-          <!-- Itemized question reviews rendered dynamically -->
+        <div id="historyTableContainer" style="overflow-x: auto;">
+          <!-- History rendered dynamically -->
         </div>
 
-        <div style="margin-top: 2.5rem; text-align: center;">
-          <button id="btnRetake" class="btn-primary">Retake Examination</button>
+        <div style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+          <button id="btnClearHistory" style="background: none; border: 1px solid var(--border-strong); color: var(--color-incorrect); padding: 0.45rem 0.9rem; font-family: var(--font-mono); font-size: 0.78rem; cursor: pointer;">
+            Clear Local Score Log 🗑
+          </button>
         </div>
       </div>
     </section>

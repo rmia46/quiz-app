@@ -1,0 +1,12 @@
+[
+  {
+    "id": "history-102",
+    "title": "HIS 102 & 205: World History & Civilization",
+    "department": "Department of History & Philosophy",
+    "description": "50 high-yield questions spanning historical methodology, archaeological & literary evidence, evolutionary stages, and civilizational origins.",
+    "questionCount": 50,
+    "timeMinutes": 30,
+    "dataPath": "modules/history-102/questions.json",
+    "tags": ["History", "Anthropology", "Civilization"]
+  }
+]
