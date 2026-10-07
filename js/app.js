@@ -1,4 +1,4 @@
-// Self-contained academic quiz engine and controller with segments & pagination
+// Self-contained academic quiz engine and controller with segments, serif typography, and question marking
 (function() {
   'use strict';
 
@@ -993,6 +993,7 @@ class QuizEngine {
   const FIXED_EXAM_MINUTES = 30;
   const QUESTIONS_PER_SEGMENT = 10;
   let cachedResultDetails = [];
+  const flaggedQuestions = new Set(); // Stores IDs of questions marked for review
 
   function init() {
     // Screens
@@ -1018,8 +1019,9 @@ class QuizEngine {
     const segmentTabsGroup = document.getElementById('segmentTabsGroup');
     const qIndexLabel = document.getElementById('qIndexLabel');
     const qTopicLabel = document.getElementById('qTopicLabel');
-    const qTypeBadge = document.getElementById('qTypeBadge');
-    const qDiffBadge = document.getElementById('qDiffBadge');
+    const btnToggleFlag = document.getElementById('btnToggleFlag');
+    const flagIcon = document.getElementById('flagIcon');
+    const flagText = document.getElementById('flagText');
     const qText = document.getElementById('qText');
     const optionsContainer = document.getElementById('optionsContainer');
     const segmentPaginationBar = document.getElementById('segmentPaginationBar');
@@ -1105,7 +1107,7 @@ class QuizEngine {
         segmentTabsGroup.appendChild(tabBtn);
       }
 
-      // Render 10-Question Pagination Bar for the active segment
+      // Render 10-Question Pagination Bar for active segment
       segmentPaginationBar.innerHTML = '';
       const segStart = currentSegmentIdx * QUESTIONS_PER_SEGMENT;
       const segEnd = Math.min(segStart + QUESTIONS_PER_SEGMENT, totalQuestions);
@@ -1115,19 +1117,44 @@ class QuizEngine {
         const pageBtn = document.createElement('button');
         pageBtn.type = 'button';
         pageBtn.className = 'page-num-btn';
+
         if (i === quizEngine.currentIndex) {
           pageBtn.classList.add('current');
         }
         if (quizEngine.hasAnswered(q.id)) {
           pageBtn.classList.add('answered');
         }
+        if (flaggedQuestions.has(q.id)) {
+          pageBtn.classList.add('flagged');
+        }
+
         pageBtn.textContent = i + 1;
+        pageBtn.title = `Question ${i + 1}` + (flaggedQuestions.has(q.id) ? ' (Marked for Review)' : '');
         pageBtn.addEventListener('click', () => {
           quizEngine.jumpTo(i);
           renderCurrentQuestion();
         });
         segmentPaginationBar.appendChild(pageBtn);
       }
+    }
+
+    function updateFlagButtonState(qId) {
+      const isFlagged = flaggedQuestions.has(qId);
+      btnToggleFlag.classList.toggle('flagged', isFlagged);
+      flagIcon.textContent = isFlagged ? '⚑' : '⚐';
+      flagText.textContent = isFlagged ? 'Marked' : 'Mark for Review';
+    }
+
+    function toggleFlagCurrentQuestion() {
+      const q = quizEngine.getCurrentQuestion();
+      if (!q) return;
+      if (flaggedQuestions.has(q.id)) {
+        flaggedQuestions.delete(q.id);
+      } else {
+        flaggedQuestions.add(q.id);
+      }
+      updateFlagButtonState(q.id);
+      renderSegmentsAndPagination();
     }
 
     function renderCurrentQuestion() {
@@ -1138,10 +1165,9 @@ class QuizEngine {
       progressBar.style.width = `${Math.round((currentNum / total) * 100)}%`;
       qIndexLabel.textContent = `QUESTION ${currentNum} OF ${total}`;
       qTopicLabel.textContent = q.topic || 'World History';
-      qTypeBadge.textContent = q.type.toUpperCase();
-      qTypeBadge.className = `tag-badge tag-${q.type}`;
-      qDiffBadge.textContent = q.difficulty.toUpperCase();
       qText.textContent = q.question;
+
+      updateFlagButtonState(q.id);
 
       optionsContainer.innerHTML = '';
       const selectedOption = quizEngine.getUserAnswer(q.id);
@@ -1196,6 +1222,7 @@ class QuizEngine {
       currentStudentName = inputName;
       StorageService.setActiveUser(inputName);
       showUserBadge(inputName);
+      flaggedQuestions.clear();
 
       quizEngine = new QuizEngine(allQuestionsData, {
         mode: 'exam',
@@ -1223,10 +1250,14 @@ class QuizEngine {
       const answeredCount = Object.keys(quizEngine.userAnswers).length;
       const total = quizEngine.filteredQuestions.length;
       const unanswered = total - answeredCount;
+      const flaggedCount = flaggedQuestions.size;
 
       let msg = `Submit Examination?\n\nCandidate: ${currentStudentName}\nAnswered: ${answeredCount} / ${total}`;
       if (unanswered > 0) {
         msg += `\nWarning: You have ${unanswered} unanswered question(s).`;
+      }
+      if (flaggedCount > 0) {
+        msg += `\nNote: You have ${flaggedCount} marked question(s).`;
       }
 
       if (confirm(msg)) {
@@ -1308,16 +1339,16 @@ class QuizEngine {
         div.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
             <span style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-muted);">QUESTION #${q.id}</span>
-            <span class="tag-badge tag-${q.type}">${item.status.toUpperCase()}</span>
+            <span style="font-family:var(--font-mono); font-size:0.75rem; text-transform:uppercase; font-weight:700; color: ${item.isCorrect ? 'var(--color-correct)' : 'var(--color-incorrect)'};">${item.status.toUpperCase()}</span>
           </div>
-          <h3 style="font-family:var(--font-serif); font-size:1.15rem; margin-bottom:0.75rem; color:var(--text-primary);">${escapeHtml(q.question)}</h3>
-          <div style="font-size:0.9rem; margin-bottom:0.5rem; color: ${item.isCorrect ? 'var(--color-correct)' : 'var(--color-incorrect)'};">
+          <h3 style="font-family:var(--font-serif); font-size:1.18rem; margin-bottom:0.75rem; color:var(--text-primary); line-height:1.45;">${escapeHtml(q.question)}</h3>
+          <div style="font-size:0.95rem; margin-bottom:0.5rem; color: ${item.isCorrect ? 'var(--color-correct)' : 'var(--color-incorrect)'};">
             <strong>Your Answer:</strong> ${escapeHtml(userAns)}
           </div>
-          <div style="font-size:0.9rem; margin-bottom:0.75rem; color: var(--accent-lime);">
+          <div style="font-size:0.95rem; margin-bottom:0.75rem; color: var(--accent-lime);">
             <strong>Correct Answer:</strong> ${escapeHtml(correctAns)}
           </div>
-          <div style="font-size:0.88rem; color:var(--text-secondary); background:var(--bg-surface-elevated); padding:0.75rem; border-left:3px solid var(--accent-lime);">
+          <div style="font-size:0.92rem; color:var(--text-secondary); background:var(--bg-surface-elevated); padding:0.85rem; border-left:3px solid var(--accent-lime); font-family:var(--font-serif);">
             <strong>Explanation:</strong> ${escapeHtml(q.explanation)}
           </div>
         `;
@@ -1390,6 +1421,7 @@ class QuizEngine {
         handleStartExam();
       }
     });
+    btnToggleFlag.addEventListener('click', toggleFlagCurrentQuestion);
     btnViewHistory.addEventListener('click', () => showScreen('history'));
     btnBackToHome.addEventListener('click', () => showScreen('welcome'));
     btnRetakeExam.addEventListener('click', handleStartExam);

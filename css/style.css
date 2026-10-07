@@ -52,8 +52,9 @@
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: var(--font-sans);
-  line-height: 1.6;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
@@ -395,8 +396,9 @@ body {
   text-align: left;
   transition: var(--transition-fast);
   color: var(--text-primary);
-  font-size: 0.98rem;
-  line-height: 1.5;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.55;
   width: 100%;
 }
 
@@ -424,6 +426,48 @@ body {
 
 .option-text {
   flex-grow: 1;
+}
+
+.btn-flag-mark {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.65rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: var(--transition-fast);
+}
+
+.btn-flag-mark:hover {
+  border-color: var(--color-warning);
+  color: var(--color-warning);
+}
+
+.btn-flag-mark.flagged {
+  background: rgba(217, 119, 6, 0.12);
+  border-color: var(--color-warning);
+  color: var(--color-warning);
+  font-weight: 700;
+}
+
+.page-num-btn.flagged {
+  border-color: var(--color-warning) !important;
+  color: var(--color-warning) !important;
+  position: relative;
+}
+
+.page-num-btn.flagged::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 5px;
+  height: 5px;
+  background: var(--color-warning);
 }
 
 /* Question Segments Navigation */
