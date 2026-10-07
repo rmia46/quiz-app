@@ -18,7 +18,7 @@
         <div class="brand-badge">DEPARTMENT OF HISTORY & PHILOSOPHY</div>
         <div class="brand-title">Academic Examination Platform</div>
       </div>
-      <div style="display: flex; align-items: center; gap: 1rem;">
+      <div class="header-right-zone">
         <div id="userBadge" class="user-status-pill" style="display: none;">
           <span>Candidate:</span> <strong id="userNameDisplay">Anonymous</strong>
           <button id="btnSwitchUser" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.75rem; text-decoration:underline;">(Change)</button>
@@ -54,8 +54,8 @@
           <div class="meta-item-value">30 Minutes</div>
         </div>
         <div>
-          <div class="meta-item-label">Question Types</div>
-          <div class="meta-item-value">Creative · General · Mixed</div>
+          <div class="meta-item-label">Structure</div>
+          <div class="meta-item-value">5 Segments (10 Qs Each)</div>
         </div>
       </div>
 
@@ -81,6 +81,14 @@
       </div>
 
       <div class="academic-card">
+        <!-- Segments Navigation Bar -->
+        <div class="segments-header">
+          <div class="meta-item-label">EXAM SEGMENT</div>
+          <div id="segmentTabsGroup" class="segment-tabs-group">
+            <!-- Rendered dynamically: Segment 1 (1-10), Segment 2 (11-20), etc. -->
+          </div>
+        </div>
+
         <div class="question-nav-summary">
           <span id="qIndexLabel">QUESTION 1 OF 50</span>
           <div>
@@ -96,19 +104,18 @@
           <!-- Rendered dynamically -->
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
+        <!-- Segment Pagination Bar (10 questions of current segment) -->
+        <div id="segmentPaginationBar" class="pagination-bar">
+          <!-- Rendered dynamically: 1 2 3 4 5 6 7 8 9 10 -->
+        </div>
+
+        <div class="quiz-controls" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 0.5rem;">
           <div>
             <button id="btnPrev" class="btn-secondary">← Previous</button>
             <button id="btnNext" class="btn-primary" style="margin-left: 0.5rem;">Next →</button>
           </div>
           <button id="btnSubmitExam" class="btn-secondary" style="border-color: var(--color-incorrect); color: var(--color-incorrect);">Finish & Submit</button>
         </div>
-      </div>
-
-      <!-- Question Palette -->
-      <div class="academic-card" style="padding: 1.25rem;">
-        <div class="meta-item-label" style="margin-bottom: 0.5rem;">Question Navigator (Click number to jump)</div>
-        <div id="questionPalette" class="palette-container"></div>
       </div>
     </section>
 

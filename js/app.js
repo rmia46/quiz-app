@@ -1,4 +1,4 @@
-// Self-contained academic quiz engine and controller
+// Self-contained academic quiz engine and controller with segments & pagination
 (function() {
   'use strict';
 
@@ -991,6 +991,7 @@ class QuizEngine {
   let quizEngine = null;
   let currentStudentName = '';
   const FIXED_EXAM_MINUTES = 30;
+  const QUESTIONS_PER_SEGMENT = 10;
   let cachedResultDetails = [];
 
   function init() {
@@ -1014,16 +1015,17 @@ class QuizEngine {
 
     // Quiz elements
     const progressBar = document.getElementById('progressBar');
+    const segmentTabsGroup = document.getElementById('segmentTabsGroup');
     const qIndexLabel = document.getElementById('qIndexLabel');
     const qTopicLabel = document.getElementById('qTopicLabel');
     const qTypeBadge = document.getElementById('qTypeBadge');
     const qDiffBadge = document.getElementById('qDiffBadge');
     const qText = document.getElementById('qText');
     const optionsContainer = document.getElementById('optionsContainer');
+    const segmentPaginationBar = document.getElementById('segmentPaginationBar');
     const btnPrev = document.getElementById('btnPrev');
     const btnNext = document.getElementById('btnNext');
     const btnSubmitExam = document.getElementById('btnSubmitExam');
-    const questionPalette = document.getElementById('questionPalette');
 
     // Results elements
     const resCandidateName = document.getElementById('resCandidateName');
@@ -1082,34 +1084,50 @@ class QuizEngine {
       }
     }
 
-    function renderPalette() {
-      questionPalette.innerHTML = '';
-      quizEngine.filteredQuestions.forEach((q, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'palette-btn';
-        btn.textContent = idx + 1;
-        btn.setAttribute('aria-label', `Question ${idx + 1}`);
-        btn.addEventListener('click', () => {
-          quizEngine.jumpTo(idx);
+    function renderSegmentsAndPagination() {
+      const totalQuestions = quizEngine.filteredQuestions.length;
+      const totalSegments = Math.ceil(totalQuestions / QUESTIONS_PER_SEGMENT);
+      const currentSegmentIdx = Math.floor(quizEngine.currentIndex / QUESTIONS_PER_SEGMENT);
+
+      // Render Segment Header Tabs
+      segmentTabsGroup.innerHTML = '';
+      for (let s = 0; s < totalSegments; s++) {
+        const startQ = s * QUESTIONS_PER_SEGMENT + 1;
+        const endQ = Math.min((s + 1) * QUESTIONS_PER_SEGMENT, totalQuestions);
+        const tabBtn = document.createElement('button');
+        tabBtn.type = 'button';
+        tabBtn.className = 'segment-tab-btn' + (s === currentSegmentIdx ? ' active' : '');
+        tabBtn.textContent = `Part ${s + 1} (${startQ}–${endQ})`;
+        tabBtn.addEventListener('click', () => {
+          quizEngine.jumpTo(s * QUESTIONS_PER_SEGMENT);
           renderCurrentQuestion();
         });
-        questionPalette.appendChild(btn);
-      });
-      updatePaletteStates();
-    }
+        segmentTabsGroup.appendChild(tabBtn);
+      }
 
-    function updatePaletteStates() {
-      const buttons = questionPalette.querySelectorAll('.palette-btn');
-      buttons.forEach((btn, idx) => {
-        const q = quizEngine.filteredQuestions[idx];
-        btn.classList.remove('current', 'answered');
-        if (idx === quizEngine.currentIndex) {
-          btn.classList.add('current');
+      // Render 10-Question Pagination Bar for the active segment
+      segmentPaginationBar.innerHTML = '';
+      const segStart = currentSegmentIdx * QUESTIONS_PER_SEGMENT;
+      const segEnd = Math.min(segStart + QUESTIONS_PER_SEGMENT, totalQuestions);
+
+      for (let i = segStart; i < segEnd; i++) {
+        const q = quizEngine.filteredQuestions[i];
+        const pageBtn = document.createElement('button');
+        pageBtn.type = 'button';
+        pageBtn.className = 'page-num-btn';
+        if (i === quizEngine.currentIndex) {
+          pageBtn.classList.add('current');
         }
         if (quizEngine.hasAnswered(q.id)) {
-          btn.classList.add('answered');
+          pageBtn.classList.add('answered');
         }
-      });
+        pageBtn.textContent = i + 1;
+        pageBtn.addEventListener('click', () => {
+          quizEngine.jumpTo(i);
+          renderCurrentQuestion();
+        });
+        segmentPaginationBar.appendChild(pageBtn);
+      }
     }
 
     function renderCurrentQuestion() {
@@ -1131,6 +1149,7 @@ class QuizEngine {
 
       q.options.forEach((optText, optIdx) => {
         const optBtn = document.createElement('button');
+        optBtn.type = 'button';
         optBtn.className = 'option-btn';
         if (selectedOption === optIdx) {
           optBtn.classList.add('selected');
@@ -1145,7 +1164,7 @@ class QuizEngine {
           quizEngine.selectAnswer(q.id, optIdx);
           const allBtns = optionsContainer.querySelectorAll('.option-btn');
           allBtns.forEach((b, i) => b.classList.toggle('selected', i === optIdx));
-          updatePaletteStates();
+          renderSegmentsAndPagination();
         });
 
         optionsContainer.appendChild(optBtn);
@@ -1153,7 +1172,8 @@ class QuizEngine {
 
       btnPrev.disabled = quizEngine.currentIndex === 0;
       btnNext.style.display = (quizEngine.currentIndex === total - 1) ? 'none' : 'inline-flex';
-      updatePaletteStates();
+
+      renderSegmentsAndPagination();
     }
 
     function navigate(dir) {
@@ -1196,7 +1216,6 @@ class QuizEngine {
       quizEngine.startTimer();
       updateTimerDisplay(quizEngine.timeRemaining);
 
-      renderPalette();
       renderCurrentQuestion();
     }
 
