@@ -35,6 +35,10 @@
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", monospace;
 
+  /* Symmetrical Component Heights */
+  --btn-height-standard: 46px;
+  --btn-height-compact: 36px;
+
   /* Strict Sharp Corners */
   --border-radius: 0px !important;
   --transition-fast: 0.15s ease;
@@ -260,22 +264,25 @@ body {
   box-shadow: 0 0 0 2px var(--accent-lime-soft);
 }
 
-/* Buttons */
+/* Buttons - Symmetrical Heights */
 .btn-primary {
+  height: var(--btn-height-standard);
   background: var(--accent-lime);
   color: #ffffff;
   font-family: var(--font-mono);
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  padding: 0.85rem 1.75rem;
+  padding: 0 1.65rem;
   border: 1px solid var(--accent-lime);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   transition: var(--transition-fast);
+  box-sizing: border-box;
 }
 
 .btn-primary:hover {
@@ -284,24 +291,33 @@ body {
 }
 
 .btn-secondary {
+  height: var(--btn-height-standard);
   background: transparent;
   color: var(--text-secondary);
   border: 1px solid var(--border-strong);
   font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 600;
-  padding: 0.75rem 1.35rem;
+  padding: 0 1.45rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   transition: var(--transition-fast);
+  box-sizing: border-box;
 }
 
 .btn-secondary:hover {
   border-color: var(--accent-lime);
   color: var(--text-primary);
   background: var(--bg-surface-elevated);
+}
+
+.btn-compact {
+  height: var(--btn-height-compact) !important;
+  padding: 0 0.85rem !important;
+  font-size: 0.78rem !important;
 }
 
 /* Typography elements */
@@ -476,14 +492,19 @@ body {
 }
 
 .segment-tab-btn {
+  height: var(--btn-height-compact);
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-strong);
   color: var(--text-secondary);
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  padding: 0.35rem 0.65rem;
+  padding: 0 0.75rem;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: var(--transition-fast);
+  box-sizing: border-box;
 }
 
 .segment-tab-btn:hover {
@@ -512,8 +533,8 @@ body {
 }
 
 .page-num-btn {
-  min-width: 32px;
-  height: 32px;
+  min-width: var(--btn-height-compact);
+  height: var(--btn-height-compact);
   padding: 0 0.35rem;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
@@ -525,6 +546,7 @@ body {
   align-items: center;
   justify-content: center;
   transition: var(--transition-fast);
+  box-sizing: border-box;
 }
 
 .page-num-btn:hover {
