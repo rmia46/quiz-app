@@ -1,0 +1,752 @@
+export const questionsData = [
+  {
+    "id": 1,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Human Evolution",
+    "question": "Which of the following represents the correct chronological sequence of human evolutionary stages according to paleoanthropology?",
+    "options": [
+      "Australopithecus \u2192 Homo habilis \u2192 Homo erectus \u2192 Neanderthal \u2192 Homo sapiens",
+      "Homo habilis \u2192 Australopithecus \u2192 Homo erectus \u2192 Homo sapiens \u2192 Neanderthal",
+      "Australopithecus \u2192 Homo erectus \u2192 Homo habilis \u2192 Homo sapiens \u2192 Neanderthal",
+      "Homo erectus \u2192 Australopithecus \u2192 Homo habilis \u2192 Neanderthal \u2192 Homo sapiens"
+    ],
+    "answer": 0,
+    "explanation": "The accepted evolutionary progression proceeds from Australopithecus to Homo habilis (handy man), Homo erectus (upright man), Neanderthal, and finally anatomically modern Homo sapiens."
+  },
+  {
+    "id": 2,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Human Evolution",
+    "question": "The fossil skeleton discovered in Ethiopia in 1974 popularly known as \"Lucy\" provided critical evidence for which major evolutionary milestone?",
+    "options": [
+      "The development of advanced symbolic cave art",
+      "Early bipedalism (walking upright) occurring before significant expansion in brain size",
+      "The systematic domestication of agricultural grains",
+      "Mastery of pyrotechnology and controlled fire"
+    ],
+    "answer": 1,
+    "explanation": "Lucy (Australopithecus afarensis) walked upright despite possessing an ape-sized cranial capacity, demonstrating that bipedalism preceded large brain expansion."
+  },
+  {
+    "id": 3,
+    "type": "creative",
+    "difficulty": "hard",
+    "topic": "Human Evolution & Adaptation",
+    "question": "Why is environmental adaptation considered the primary catalyst in the divergence and survival of early hominids over other primate lineages?",
+    "options": [
+      "Climate stability allowed hominids to remain in unchanging forest canopies without evolving",
+      "Rapid fluctuations in climate and savannah environments selected for bipedal locomotion, toolmaking, and cognitive flexibility",
+      "Early hominids eliminated environmental pressures entirely through immediate industrial agriculture",
+      "Primate lineages diverged strictly due to genetic drift with zero environmental influence"
+    ],
+    "answer": 1,
+    "explanation": "Survival demanded constant adaptation to shifting ecosystems, favoring traits like bipedalism, energy efficiency, and cognitive problem-solving."
+  },
+  {
+    "id": 4,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Human Evolution",
+    "question": "Which hominid species is most closely associated with the Latin meaning \"handy man\" due to early stone tool utilization?",
+    "options": [
+      "Homo erectus",
+      "Homo habilis",
+      "Australopithecus",
+      "Homo neanderthalensis"
+    ],
+    "answer": 1,
+    "explanation": "Homo habilis literally translates to \"handy human\" because of association with Oldowan stone tool industries."
+  },
+  {
+    "id": 5,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Evolutionary Biology",
+    "question": "A biological anthropologist wants to determine genetic lineage and migration bottlenecks among ancient hominid populations. Which scientific method is most appropriate?",
+    "options": [
+      "Potassium-argon dating",
+      "Epigraphic palaeography",
+      "DNA and genetic variation analysis",
+      "Stratigraphic numismatics"
+    ],
+    "answer": 2,
+    "explanation": "DNA analysis directly examines biological inheritance, lineage, and genetic mutations across populations."
+  },
+  {
+    "id": 6,
+    "type": "general",
+    "difficulty": "medium",
+    "topic": "Dating Methods",
+    "question": "Radiocarbon dating relies on the steady radioactive decay of Carbon-14 (C-14) into which stable isotope?",
+    "options": [
+      "Nitrogen-14 / Carbon-12",
+      "Argon-40",
+      "Potassium-40",
+      "Uranium-238"
+    ],
+    "answer": 0,
+    "explanation": "Radiocarbon dating measures the ratio of radioactive C-14 to stable C-12 in organic matter after an organism ceases biological carbon intake."
+  },
+  {
+    "id": 7,
+    "type": "creative",
+    "difficulty": "hard",
+    "topic": "Dating Methods",
+    "question": "An archaeologist uncovers a volcanic ash layer containing an early hominid fossil embedded inside million-year-old rock, alongside a charred animal bone from 3,000 years ago. Which pair of dating methods should be chosen?",
+    "options": [
+      "Radiocarbon for the million-year volcanic rock; Potassium-argon for the charred bone",
+      "Potassium-argon for the volcanic strata; Radiocarbon for the organic charred bone",
+      "Numismatic comparison for the rock; Paleography for the bone",
+      "Dendrochronology for both artifacts"
+    ],
+    "answer": 1,
+    "explanation": "Potassium-argon decay is ideal for dating ancient igneous/volcanic geological formations across millions of years, while C-14 is suitable for organic remains up to ~50,000 years."
+  },
+  {
+    "id": 8,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Scientific Dating",
+    "question": "Carbon-14 is characterized as a radioactive isotope containing:",
+    "options": [
+      "6 protons and 8 neutrons",
+      "8 protons and 6 neutrons",
+      "7 protons and 7 neutrons",
+      "6 protons and 6 neutrons"
+    ],
+    "answer": 0,
+    "explanation": "Carbon has an atomic number of 6 (6 protons), giving isotope Carbon-14 eight neutrons (6 + 8 = 14)."
+  },
+  {
+    "id": 9,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Dating Limitations",
+    "question": "Why is Radiocarbon (C-14) dating completely ineffective for determining the age of a bronze coin or stone axe?",
+    "options": [
+      "Metals and non-organic minerals never absorbed atmospheric carbon through biological metabolic cycles",
+      "Stone and bronze dissolve radioactive isotopes instantaneously",
+      "C-14 only operates on living organisms after their 100,000th year of decay",
+      "Metal objects cannot be examined under laboratory spectrometry"
+    ],
+    "answer": 0,
+    "explanation": "Radiocarbon dating is only applicable to organic remains (wood, bone, charcoal, shell) that took in atmospheric carbon during life."
+  },
+  {
+    "id": 10,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Concept of History",
+    "question": "History as an academic discipline is fundamentally defined not merely as a chronicle of past events, but as:",
+    "options": [
+      "A collection of legendary mythologies passed down without scrutiny",
+      "The systematic record, interpretation, and causal analysis of past human thoughts and actions",
+      "An unquestionable compilation of administrative government edicts",
+      "A purely speculative narrative unconstrained by empirical evidence"
+    ],
+    "answer": 1,
+    "explanation": "History is the critical record and interpretation of human thoughts, actions, and the context determining them, seeking to identify underlying causes."
+  },
+  {
+    "id": 11,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Historiographical Philosophy",
+    "question": "\"Those who cannot remember the past are condemned to repeat it.\" This well-known philosophical aphorism was coined by:",
+    "options": [
+      "E. H. Carr",
+      "George Santayana",
+      "Herodotus",
+      "Kautilya"
+    ],
+    "answer": 1,
+    "explanation": "George Santayana (1863\u20131952), Spanish/American philosopher and poet, authored this famous statement on historical memory."
+  },
+  {
+    "id": 12,
+    "type": "creative",
+    "difficulty": "hard",
+    "topic": "E. H. Carr Historiography",
+    "question": "In \"What is History?\", E. H. Carr compares historical facts to \"fish swimming about in a vast and sometimes inaccessible ocean.\" What is his core epistemological argument?",
+    "options": [
+      "Facts are static, objective entities that speak entirely for themselves without human interference",
+      "The facts a historian obtains are predetermined by where they fish and what tackle they choose; history is fundamentally interpretation",
+      "Historical evidence can only be retrieved by marine biologists and oceanographers",
+      "All historical documentation is fictional and has no connection to real events"
+    ],
+    "answer": 1,
+    "explanation": "Carr emphasizes that facts do not present themselves objectively on a fishmonger's slab; historians actively select, filter, and interpret them."
+  },
+  {
+    "id": 13,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "E. H. Carr Maxim",
+    "question": "Following E. H. Carr\u2019s maxim, \"Study the historian before you begin to study the facts,\" what should a researcher do first when evaluating a historical treatise?",
+    "options": [
+      "Accept all stated statistical conclusions without checking the bibliography",
+      "Investigate the author's ideological perspective, socio-political context, and potential biases",
+      "Discard the entire book if written more than ten years ago",
+      "Memorize every footnote before reading the thesis"
+    ],
+    "answer": 1,
+    "explanation": "Understanding the author's background, worldview, and institutional context provides essential perspective on how facts were selected and interpreted."
+  },
+  {
+    "id": 14,
+    "type": "creative",
+    "difficulty": "medium",
+    "topic": "Purpose of History",
+    "question": "How does studying historical dilemmas foster moral contemplation and responsible citizenship in modern society?",
+    "options": [
+      "It offers dogma that removes the need for individual ethical decision-making",
+      "It presents diverse scenarios enabling students to examine values, consequence of choices, and intercultural dynamics",
+      "It forces students to copy ancient legal punishments into modern penal law",
+      "It proves that ethics and morality remain completely uniform across all cultures"
+    ],
+    "answer": 1,
+    "explanation": "History provides an evidential terrain for testing moral reasoning, understanding social evolution, and cultivating intercultural perspective."
+  },
+  {
+    "id": 15,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Chronology Terminology",
+    "question": "In historical chronological notation, what do the abbreviations BCE and CE stand for?",
+    "options": [
+      "Before Century Era and Century Era",
+      "Before Common Era and Common Era",
+      "Before Classical Epoch and Classical Epoch",
+      "British Colonial Era and Colonial Era"
+    ],
+    "answer": 1,
+    "explanation": "BCE stands for Before Common Era (or Before Christian Era) and CE stands for Common Era (equivalent chronologically to BC and AD)."
+  },
+  {
+    "id": 16,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Historical Auxiliary Sciences",
+    "question": "The scientific discipline concerned with the study, deciphering, and analysis of ancient inscriptions on stone slabs, pillars, and copper plates is known as:",
+    "options": [
+      "Numismatics",
+      "Palaeography (and Epigraphy)",
+      "Archaeogenetics",
+      "Toponymy"
+    ],
+    "answer": 1,
+    "explanation": "Palaeography is the study of ancient writings and inscriptions found on rocks, pillars, caves, and architectural monuments."
+  },
+  {
+    "id": 17,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Historical Auxiliary Sciences",
+    "question": "What is the specialized branch of historical inquiry dedicated to the study of coins, medals, and monetary tokens?",
+    "options": [
+      "Stratigraphy",
+      "Numismatics",
+      "Heraldry",
+      "Iconography"
+    ],
+    "answer": 1,
+    "explanation": "Numismatics is the study of coins and physical currency from archaeological and historical contexts."
+  },
+  {
+    "id": 18,
+    "type": "creative",
+    "difficulty": "hard",
+    "topic": "Numismatics Analysis",
+    "question": "A hoard of 1st-century Roman gold and silver denarii is excavated along the coastal ports of ancient Bengal and Southern India. What can historians deduce from this find?",
+    "options": [
+      "The Roman Empire militarily conquered and directly governed ancient Bengal",
+      "Vibrant long-distance maritime trade and maritime commercial exchange connected the Mediterranean and the Indian subcontinent",
+      "Ancient Indians were unable to mint their own metal currency",
+      "Roman emperors regularly performed religious rituals in Bay of Bengal temples"
+    ],
+    "answer": 1,
+    "explanation": "Foreign currency hoards indicate thriving cross-regional commerce, trade routes, and international financial liquidity."
+  },
+  {
+    "id": 19,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Numismatics Evidence",
+    "question": "Beyond economic prosperity and trade relations, what cultural and political information do ancient coins directly preserve?",
+    "options": [
+      "Portraits of reigning monarchs, royal titles, state deities, and symbolic regional fauna",
+      "Complete verbatim transcripts of criminal court trials",
+      "Verbatim transcripts of philosophical philosophical dialogues",
+      "Detailed geographical surveys of mountain heights"
+    ],
+    "answer": 0,
+    "explanation": "Coin faces prominently feature monarch portraits, titles, religious deities, and regional symbols indicating mint origin and royal ideology."
+  },
+  {
+    "id": 20,
+    "type": "general",
+    "difficulty": "medium",
+    "topic": "Prehistoric Art",
+    "question": "The Bhimbetka rock shelters in Madhya Pradesh, India, are historically celebrated because their cave paintings provide evidence of:",
+    "options": [
+      "Mesolithic and Upper Paleolithic human community life, hunting customs, and rituals dating back over 10,000 years",
+      "The arrival of Alexander the Great's military forces in central India",
+      "The drafting of the world's first written parliamentary constitution",
+      "The construction of early Buddhist stupas during the Gupta era"
+    ],
+    "answer": 0,
+    "explanation": "Bhimbetka cave paintings preserve prehistoric depictions of hunting, dancing, animal species, and rituals dating back to ~10,000 BC."
+  },
+  {
+    "id": 21,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Archaeological Evidence",
+    "question": "Why are material monuments such as stupas, temples, monasteries, and fortified ramparts essential for reconstructing ancient social history?",
+    "options": [
+      "They represent exclusively the private thoughts of common peasants",
+      "They reflect engineering capability, state patronage, religious hegemony, and resource mobilization of their time",
+      "They were built using paper blueprints that survived intact for millennia",
+      "They prove that early societies lacked organized religious beliefs"
+    ],
+    "answer": 1,
+    "explanation": "Monumental architecture testifies to engineering skills, political power, labor mobilization, and religious practices of early civilizations."
+  },
+  {
+    "id": 22,
+    "type": "creative",
+    "difficulty": "hard",
+    "topic": "Source Evaluation",
+    "question": "When examining an Ashokan royal rock edict, an astute historian must exercise caution because royal inscriptions primarily represent:",
+    "options": [
+      "Uncensored, objective statistical surveys compiled by external foreign observers",
+      "Official imperial declarations, ethical propaganda, and state-sanctioned policy rather than everyday popular consensus",
+      "Fictional folklore created hundreds of years after the monarch died",
+      "Direct transcripts of peasant complaints recorded anonymously"
+    ],
+    "answer": 1,
+    "explanation": "Royal edicts and inscriptions are official state instruments designed to promote sovereign authority, religious policy, and idealized governance."
+  },
+  {
+    "id": 23,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Secular Literature",
+    "question": "The ancient Indian treatise \"Arthashastra\", regarded as a seminal text on statecraft, economic policy, and military strategy, is attributed to:",
+    "options": [
+      "Kalidasa",
+      "Kautilya (Chanakya)",
+      "Banabhatta",
+      "Panini"
+    ],
+    "answer": 1,
+    "explanation": "Kautilya (also known as Chanakya or Vishnugupta) authored the Arthashastra, laying foundations for governance, diplomacy, and economics."
+  },
+  {
+    "id": 24,
+    "type": "general",
+    "difficulty": "medium",
+    "topic": "Ancient Literature",
+    "question": "Ancient legal and ethical codes containing the duties of kings, judicial administration, civil rights, and social conduct are known as:",
+    "options": [
+      "Dharmasutras and Smritis",
+      "Upanishads and Aranyakas",
+      "Jatakas and Tripitakas",
+      "Puranas and Brahmanas"
+    ],
+    "answer": 0,
+    "explanation": "Dharmasutras and Smritis (law-books) prescribed civic duties, monarchical responsibilities, property rules, and criminal punishments."
+  },
+  {
+    "id": 25,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Foreign Accounts",
+    "question": "The classical accounts of Greco-Roman writers such as Pliny the Elder and Ptolemy (in his \"Geography\") provide historians with indispensable data regarding:",
+    "options": [
+      "Ancient Bengal and Indian ports, overseas maritime trade networks, and export commodities",
+      "The secret rituals of Himalayan monastic orders",
+      "The inner personal diaries of Mauryan court dancers",
+      "The exact linguistic origin of Dravidian grammatical particles"
+    ],
+    "answer": 0,
+    "explanation": "Greco-Roman accounts provide external documentation on coastal ports, trade networks, and maritime commercial exchange with Bengal and India."
+  },
+  {
+    "id": 26,
+    "type": "creative",
+    "difficulty": "hard",
+    "topic": "Foreign Account Criticism",
+    "question": "While foreign travelogues (e.g., Megasthenes, Faxian, Xuanzang, Pliny) are invaluable for external perspective, what is their inherent methodological limitation?",
+    "options": [
+      "They always refuse to write in languages decipherable today",
+      "Foreign visitors often misunderstood local idioms, viewed events through their own cultural lens, or accepted hearsay from local court escorts",
+      "Foreign travelers only recorded weather patterns and never wrote about social conditions",
+      "Foreign travelogues were legally prohibited from being archived in libraries"
+    ],
+    "answer": 1,
+    "explanation": "Foreign observers faced language barriers, cultural preconceptions, and reliance on informants, occasionally reporting myths or idealized impressions as fact."
+  },
+  {
+    "id": 27,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Religious Literature",
+    "question": "Which group of ancient Indian texts includes the Rigveda, Samaveda, Yajurveda, and Atharvaveda?",
+    "options": [
+      "The Smritis",
+      "The Vedas",
+      "The Sangam poems",
+      "The Dharmasastras"
+    ],
+    "answer": 1,
+    "explanation": "The four Vedas constitute the earliest sacred literature of ancient India, providing rich insights into Indo-Aryan social and religious structures."
+  },
+  {
+    "id": 28,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Sanskrit Literary Sources",
+    "question": "How do classical dramatic works by poets like Kalidasa and Vishakhadutta assist historians beyond their fictional or mythological plots?",
+    "options": [
+      "They serve as official legal ledgers certified by the supreme judicial magistrates",
+      "They mirror contemporary social customs, court etiquette, language registers, gender relations, and everyday folk beliefs",
+      "They contain precise geographic coordinates and satellite measurements",
+      "They represent statistical balance sheets of royal agricultural revenue"
+    ],
+    "answer": 1,
+    "explanation": "Creative literature illuminates contemporary social norms, caste distinctions, vernacular language usages, and courtly politics."
+  },
+  {
+    "id": 29,
+    "type": "creative",
+    "difficulty": "medium",
+    "topic": "Religious Literature as History",
+    "question": "Why must an empirical historian treat religious epics like the Ramayana and Mahabharata differently from modern journalistic records?",
+    "options": [
+      "They contain zero historical information and must be discarded entirely",
+      "They blend historical memory with mythological embellishment, moral allegory, and centuries of oral interpolations",
+      "They were written by contemporary foreign military generals during active campaigns",
+      "Religious texts never reflect the mental or social conditions of their era"
+    ],
+    "answer": 1,
+    "explanation": "Epics contain deep cultural and ideological truths but evolved through centuries of oral layers, requiring critical historical contextualization."
+  },
+  {
+    "id": 30,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Linguistic Sources",
+    "question": "Which ancient scholar authored the definitive Sanskrit linguistic grammar \"Ashtadhyayi\", also embedding references to contemporary political entities?",
+    "options": [
+      "Panini",
+      "Aryabhata",
+      "Charaka",
+      "Sushruta"
+    ],
+    "answer": 0,
+    "explanation": "Panini was the ancient grammarian who codified Sanskrit linguistic structures while offering incidental geographical and political data."
+  },
+  {
+    "id": 31,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Modern Sources - Archives",
+    "question": "Official government archives (e.g., bureaucratic memos, colonial administrative files) are often prized for procedural accuracy, yet their chief weakness is:",
+    "options": [
+      "They contain no legible handwritten documents",
+      "They reflect selective state priorities, deliberate suppression of scandalous abuses, and one-sided bureaucratic perspectives",
+      "They were never preserved past the administration in which they were written",
+      "They exclusively record poetry and dramatic literature"
+    ],
+    "answer": 1,
+    "explanation": "Government records frequently omit state violence, illegal maneuvers, or popular discontent to project stability and preserve official legitimacy."
+  },
+  {
+    "id": 32,
+    "type": "creative",
+    "difficulty": "hard",
+    "topic": "Source Comparison",
+    "question": "To investigate wartime atrocities during the 1971 Liberation War of Bangladesh, which combination of primary sources provides the most rigorous cross-examination?",
+    "options": [
+      "Rely solely on the state press releases of the occupying military regime",
+      "Cross-reference official military logs with independent international newspaper dispatches, civilian eye-witness oral histories, and private diaries",
+      "Only read retrospective fictional novels written decades later",
+      "Rely exclusively on ancient epigraphic inscriptions"
+    ],
+    "answer": 1,
+    "explanation": "Triangulating official records against independent international press reports, oral testimonies, and private diaries counteracts state censorship."
+  },
+  {
+    "id": 33,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Newspapers as Historical Sources",
+    "question": "Why can historical newspapers not be treated as purely neutral historical records?",
+    "options": [
+      "They are written in invisible ink that degrades after one year",
+      "They are shaped by editorial bias, commercial imperatives, political alignments, and government censorship regimes",
+      "Newspapers only report fictional literature and sports",
+      "Journalists are prohibited from witnessing public events"
+    ],
+    "answer": 1,
+    "explanation": "Periodicals reflect ideological stances, commercial ownership agendas, and under authoritarian regimes, severe press censorship."
+  },
+  {
+    "id": 34,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Private Documents",
+    "question": "The private diary of Anne Frank (1929\u20131945) is classified by historians as what type of historical source?",
+    "options": [
+      "Secondary academic synthesis",
+      "Primary personal source providing intimate firsthand testimony",
+      "Official bureaucratic government dossier",
+      "Oral folklore legend"
+    ],
+    "answer": 1,
+    "explanation": "Personal diaries and private letters created during historical events are quintessential primary personal sources."
+  },
+  {
+    "id": 35,
+    "type": "creative",
+    "difficulty": "hard",
+    "topic": "Private Diaries vs Official Reports",
+    "question": "What unique evidential advantage do private diaries and personal memoirs hold over published government whitepapers?",
+    "options": [
+      "They are automatically checked for factual accuracy by royal censors before writing",
+      "Because they were never intended for a mass audience, their contents are typically more candid, revealing emotional impact and unofficial realities",
+      "Private diaries always contain comprehensive nationwide economic statistics",
+      "Memoirs never contain any personal biases or memory distortions"
+    ],
+    "answer": 1,
+    "explanation": "Private documents convey unfiltered, candid perceptions and subjective realities that official communiqu\u00e9s deliberately conceal."
+  },
+  {
+    "id": 36,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Memoirs Limitation",
+    "question": "A statesman writes his autobiography thirty years after retiring from public office. What critical limitation must historians weigh most heavily?",
+    "options": [
+      "The author forgot how to write in his native language",
+      "Retrospective memoirs often suffer from hindsight bias, rationalization of past failures, and selective memory blurring",
+      "Ancient paper was completely unavailable during modern times",
+      "Autobiographies are classified as illegal documents by international law"
+    ],
+    "answer": 1,
+    "explanation": "Hindsight bias, memory decay, and the natural impulse toward self-justification frequently color memoirs penned years after the events."
+  },
+  {
+    "id": 37,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Oral History Sources",
+    "question": "Oral history methodology is particularly valuable in modern historical reconstruction because it:",
+    "options": [
+      "Replaces the need for any physical archaeological excavation",
+      "Gives voice to marginalized groups, illiterate communities, and subaltern classes omitted from official written records",
+      "Guarantees 100% mathematical precision for event timelines",
+      "Eliminates all subjective human emotions from historical narrative"
+    ],
+    "answer": 1,
+    "explanation": "Oral history retrieves memories of disenfranchised or non-elite individuals whose experiences never entered formal state archives."
+  },
+  {
+    "id": 38,
+    "type": "creative",
+    "difficulty": "hard",
+    "topic": "Oral History Methodology",
+    "question": "When conducting oral history interviews regarding a traumatic conflict experienced forty years prior, a researcher must account for which psychological vulnerability?",
+    "options": [
+      "The interviewee will quote exact official government gazettes verbatim without emotion",
+      "Trauma, memory degradation, retrospective coping mechanisms, and self-justification can alter factual recollections",
+      "Older witnesses never remember their own names or families",
+      "Oral testimonies are identical across all witnesses regardless of identity"
+    ],
+    "answer": 1,
+    "explanation": "Psychological trauma, aging, and the passage of time can blur precise details or cause selective suppression of painful experiences."
+  },
+  {
+    "id": 39,
+    "type": "general",
+    "difficulty": "medium",
+    "topic": "Ancient vs Modern Historiography",
+    "question": "What is the principal methodological problem when reconstructing ancient history compared to modern history?",
+    "options": [
+      "Ancient sources are overwhelmed by too many audio-visual recordings",
+      "Ancient history suffers from fragmented, disjointed sources with imprecise dating, whereas modern history suffers from source selection and ideological curation",
+      "Modern history has no surviving written documents of any kind",
+      "Ancient civilizations never used language or material culture"
+    ],
+    "answer": 1,
+    "explanation": "Ancient history contends with gaps, scarce relics, and uncertain dates; modern history struggles with an avalanche of records, censorship, and spin."
+  },
+  {
+    "id": 40,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Primary vs Secondary Sources",
+    "question": "Which of the following pairings accurately distinguishes a primary source from a secondary source on the Second World War?",
+    "options": [
+      "Primary: A 2015 textbook by an Oxford professor; Secondary: Winston Churchill's war cabinet meeting minutes from 1940",
+      "Primary: A wartime letter from a frontline soldier in 1942; Secondary: A 2005 peer-reviewed scholarly monograph analyzing WWII logistics",
+      "Primary: A Hollywood movie produced in 1998; Secondary: An infantry soldier's dog tags from 1944",
+      "Primary: A 2020 Wikipedia article; Secondary: A 2022 YouTube documentary"
+    ],
+    "answer": 1,
+    "explanation": "Primary sources originate directly from the historical period under study; secondary sources are retrospective analyses created later."
+  },
+  {
+    "id": 41,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Etymology of Civilization",
+    "question": "The English term \"civilization\" derives from the Latin root \"civilis\", which originally denoted:",
+    "options": [
+      "One who resides in a dense tropical forest",
+      "Relating to a citizen, public life, courtesy, and civil conduct",
+      "A warrior who engages in tribal nomadic plunder",
+      "A priest who performs sacrificial rites"
+    ],
+    "answer": 1,
+    "explanation": "Civilis relates to citizens (civis), public affairs, affability, and civil behavior within an organized municipal polity."
+  },
+  {
+    "id": 42,
+    "type": "creative",
+    "difficulty": "medium",
+    "topic": "Civilization Concept Evolution",
+    "question": "Why do contemporary professional historians view the 18th-century definition of civilization\u2014\"bringing humanity out of a savage state\"\u2014as obsolete and imperialistic?",
+    "options": [
+      "Because modern societies have abandoned the use of agricultural tools entirely",
+      "Because it imposed a Eurocentric, colonialist hierarchy that demeaned non-Western and indigenous cultures as \"savages\"",
+      "Because the Latin dictionary was proven to be entirely fictional in 1950",
+      "Because all human beings across history lived identical urban lifestyles"
+    ],
+    "answer": 1,
+    "explanation": "The 18th-century dichotomy of \"civilized vs savage\" served as ideological justification for imperial domination and racial paternalism."
+  },
+  {
+    "id": 43,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Neolithic Revolution",
+    "question": "The Neolithic Revolution (New Stone Age) is fundamentally distinguished by which triad of revolutionary developments?",
+    "options": [
+      "Polished stone tools, cereal agriculture, and animal domestication",
+      "Iron smelting, steam engine design, and high-speed rail",
+      "Gunpowder weaponry, paper currency, and moveable type printing",
+      "Nomadic foraging, absence of stone tools, and cave dwelling"
+    ],
+    "answer": 0,
+    "explanation": "The Neolithic era was defined by ground/polished stone implements, systematic grain cultivation, and animal domestication."
+  },
+  {
+    "id": 44,
+    "type": "creative",
+    "difficulty": "hard",
+    "topic": "Neolithic Socio-Economic Transformation",
+    "question": "How did the transition from hunter-gatherer subsistence to agricultural surplus trigger the rise of social stratification and specialized occupations?",
+    "options": [
+      "It made all individuals spend 100% of their day hunting wild animals together equally",
+      "Agricultural surplus freed segments of society from food production, enabling permanent craft specialization, managerial elites, and wealth accumulation",
+      "It eliminated private property and dissolved all forms of administrative governance",
+      "It caused human settlements to disband into isolated solitary individuals"
+    ],
+    "answer": 1,
+    "explanation": "Surplus grain freed artisans, priests, traders, and rulers from primary food gathering, creating specialized trades and hierarchical class structures."
+  },
+  {
+    "id": 45,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Environmental History",
+    "question": "What major global environmental transition at the end of the Pleistocene epoch facilitated the worldwide emergence of Neolithic cereal farming?",
+    "options": [
+      "A catastrophic plunge into a global deep freeze ice age",
+      "A post-glacial warming climate that expanded fertile grasslands, river valleys, and longer crop growing seasons",
+      "The complete dry-up of all continental freshwater rivers",
+      "The extinction of all known plant species across the globe"
+    ],
+    "answer": 1,
+    "explanation": "Holocene warming produced a stable, milder climate with abundant rainfall in river valleys, creating optimal conditions for farming."
+  },
+  {
+    "id": 46,
+    "type": "general",
+    "difficulty": "easy",
+    "topic": "Archaeological Eras",
+    "question": "Which metal age immediately succeeded the Neolithic Stone Age, characterized by early metallurgy and copper-stone tools?",
+    "options": [
+      "Iron Age",
+      "Chalcolithic (Copper) Age & Bronze Age",
+      "Industrial Age",
+      "Silicon Age"
+    ],
+    "answer": 1,
+    "explanation": "The Chalcolithic (Copper-Stone) and Bronze Ages bridged the transition between polished stone technology and the Iron Age."
+  },
+  {
+    "id": 47,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Archaeological Eras",
+    "question": "Arrange the broad technological epochs of human material development in proper sequence:",
+    "options": [
+      "Stone Age (Neolithic) \u2192 Copper/Bronze Age \u2192 Iron Age",
+      "Iron Age \u2192 Bronze Age \u2192 Neolithic Stone Age",
+      "Bronze Age \u2192 Neolithic Stone Age \u2192 Iron Age",
+      "Copper Age \u2192 Iron Age \u2192 Stone Age"
+    ],
+    "answer": 0,
+    "explanation": "Human technological progression followed Stone Age (Paleolithic/Mesolithic/Neolithic) \u2192 Chalcolithic / Bronze Age \u2192 Iron Age."
+  },
+  {
+    "id": 48,
+    "type": "creative",
+    "difficulty": "hard",
+    "topic": "Civilization Characteristics",
+    "question": "Which matrix of socio-political features distinguishes an advanced complex \"civilization\" from an egalitarian hunter-gatherer band?",
+    "options": [
+      "Complete absence of trade, shared language, and tools",
+      "Dense settlement patterns, surplus food production, institutionalized government, specialized economy, and social stratification",
+      "Equal dispersion of population with no centralized administrative structures or permanent dwellings",
+      "Exclusive reliance on wild berry foraging with zero division of labor"
+    ],
+    "answer": 1,
+    "explanation": "Civilizations are defined by urban settlements, occupational specialization, stratified hierarchy, organized governance, and surplus economic systems."
+  },
+  {
+    "id": 49,
+    "type": "general",
+    "difficulty": "medium",
+    "topic": "Neolithic Economics",
+    "question": "Why did long-distance trade and commerce first become a systemic structural feature of human societies during the Neolithic and Bronze Ages rather than the Paleolithic?",
+    "options": [
+      "Paleolithic humans had international paper currency treaties",
+      "Agricultural surplus and localized mineral deposits (like copper and tin) compelled communities to exchange specialized goods across distances",
+      "Ancient stone axes could only be moved via international cargo vessels",
+      "Hunter-gatherers were legally barred from walking outside their own caves"
+    ],
+    "answer": 1,
+    "explanation": "Food surplus allowed storing tradeable capital, while the need for non-local raw materials (tin, copper, obsidian) fostered regular trade networks."
+  },
+  {
+    "id": 50,
+    "type": "mixed",
+    "difficulty": "medium",
+    "topic": "Epistemological Synthesis",
+    "question": "When modern historians reconstruct an ancient civilization that left monumental ruins and coins but no decipherable written script (such as the Indus Valley / Harappan civilization), their findings rely overwhelmingly upon:",
+    "options": [
+      "Primary personal letters and autobiographical diaries",
+      "Material archaeological remains, palaeo-environmental science, and comparative stratigraphy",
+      "Contemporary radio broadcasts preserved on magnetic tape",
+      "Unanimous consensus from 19th-century European poetry"
+    ],
+    "answer": 1,
+    "explanation": "In the absence of deciphered written scripts, historians depend entirely on archaeological artifacts, structural remains, numismatics, and material stratigraphy."
+  }
+];

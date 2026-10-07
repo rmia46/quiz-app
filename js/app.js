@@ -1,7 +1,8 @@
 import { QuizEngine } from './quiz-engine.js';
 import { StorageService } from './storage.js';
+import { questionsData } from '../modules/history-102/questions.js';
 
-let allQuestionsData = [];
+let allQuestionsData = questionsData || [];
 let quizEngine = null;
 let currentStudentName = '';
 const FIXED_EXAM_MINUTES = 30;
@@ -62,23 +63,24 @@ let cachedResultDetails = [];
 
 // Initialize
 async function initApp() {
-  try {
-    // Load module questions
-    const res = await fetch('./modules/history-102/questions.json');
-    allQuestionsData = await res.json();
+  bindEvents();
 
-    // Check remembered student name
-    const rememberedName = StorageService.getActiveUser();
-    if (rememberedName) {
-      currentStudentName = rememberedName;
-      studentNameInput.value = rememberedName;
-      showUserBadge(rememberedName);
+  // If questionsData was not loaded via import, fallback to fetch
+  if (!allQuestionsData || allQuestionsData.length === 0) {
+    try {
+      const res = await fetch('./modules/history-102/questions.json');
+      allQuestionsData = await res.json();
+    } catch (err) {
+      console.warn('Fallback fetch failed or running offline:', err);
     }
+  }
 
-    bindEvents();
-  } catch (err) {
-    console.error('Failed to load questions dataset', err);
-    alert('Error loading quiz dataset. Please verify network or file availability.');
+  // Check remembered student name
+  const rememberedName = StorageService.getActiveUser();
+  if (rememberedName) {
+    currentStudentName = rememberedName;
+    studentNameInput.value = rememberedName;
+    showUserBadge(rememberedName);
   }
 }
 
@@ -93,6 +95,12 @@ function showUserBadge(name) {
 
 function bindEvents() {
   btnStartExam.addEventListener('click', handleStartExam);
+  studentNameInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleStartExam();
+    }
+  });
   btnViewHistory.addEventListener('click', () => showScreen('history'));
   btnBackToHome.addEventListener('click', () => showScreen('welcome'));
   btnRetakeExam.addEventListener('click', handleStartExam);
@@ -144,6 +152,11 @@ function handleStartExam() {
   if (!inputName) {
     alert('Please enter your Candidate Name / Student ID before starting the examination.');
     studentNameInput.focus();
+    return;
+  }
+
+  if (!allQuestionsData || allQuestionsData.length === 0) {
+    alert('Questions dataset is not loaded. Please ensure questions.js or questions.json is accessible.');
     return;
   }
 
